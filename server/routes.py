@@ -97,9 +97,23 @@ def todo():
     
 @app.route('/get_todos/<user>/<week>', methods=['GET'])
 def get_todos(user, week):
-    #do dokonczenia funkcjonalnosc
-    return "XDD" + user +" XFDF"+week
+    todos_ = Todos.query.filter_by(user_id = user, week = week).all()
+    todos = []
     
+    for item in todos_:
+        todo_ = Todos.query.filter_by(id = int(item.id)).first()
+        todo = {
+            "id":todo_.id,
+            "status": todo_.status,
+            "text": todo_.text,
+            "week": todo_.week,
+            "day_of_week": todo_.day_of_week,
+            "day_of_month": todo_.day_of_month,
+            "year": todo_.year,
+            "month": todo_.month
+        }
+        todos.append(todo)
+    return jsonify(todos) 
 
 
 @app.route('/user', methods=['POST'])
