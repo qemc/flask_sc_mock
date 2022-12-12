@@ -16,6 +16,10 @@ class Events(db.Model):
     desc = db.Column(db.String(length=800), nullable=False)
     title = db.Column(db.String(length=100), nullable=False)
     day_of_week = db.Column(db.Integer(), nullable = False)
+    day_of_month = db.Column(db.Integer(), nullable = False)
+    year = db.Column(db.Integer(), nullable = False)
+    month = db.Column(db.Integer(), nullable = False)
+    
 
 class Todos(db.Model):
     user_id = db.Column(db.Integer(), db.ForeignKey('user.id'))
@@ -24,6 +28,9 @@ class Todos(db.Model):
     text = db.Column(db.String(length=800), nullable=False)
     week = db.Column(db.Integer(), nullable = False)
     day_of_week = db.Column(db.Integer(), nullable = False)
+    day_of_month = db.Column(db.Integer(), nullable = False)
+    year = db.Column(db.Integer(), nullable = False)
+    month = db.Column(db.Integer(), nullable = False)
 
 class Notes(db.Model):
     user_id = db.Column(db.Integer(), db.ForeignKey('user.id'))

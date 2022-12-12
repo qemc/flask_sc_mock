@@ -14,6 +14,7 @@ CORS(app, supports_credentials=True)
 server_session = Session(app)
 
 with app.app_context():
+    
     db.create_all()
     
     
