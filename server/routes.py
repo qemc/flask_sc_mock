@@ -6,19 +6,9 @@ import requests
 from server.models import Events, User, Todos
 
 
-
-def get_time():
-
-    url = "http://worldtimeapi.org/api/timezone/Europe/Warsaw"
-    response = requests.get(url)
-    data = response.json()
-    return data["week_number"]
-
-
 @app.route("/", methods=['GET'])
 def home():
 
-    week_nr = int(get_time())
     url1 = "https://www.timeapi.io/api/Time/current/zone?timeZone=Europe/Warsaw"
     url2 = "http://worldtimeapi.org/api/timezone/Europe/Warsaw"
     response1 = requests.get(url1)
@@ -39,15 +29,6 @@ def home():
         "day_week_number": day_week_number,
         "year": year
     })
-
-
-
-@app.route('/test/<name>', methods =['POST'])
-def test(name):
-    xd = 'hi my name is: ' + name
-
-    return jsonify({"text":xd})
-
 
 @app.route('/event',methods=['POST'])
 def event():
@@ -115,6 +96,29 @@ def get_todos(user, week):
         todos.append(todo)
     return jsonify(todos) 
 
+
+@app.route('/get_events/<user>/<week>', methods=['GET'])
+def get_events(user, week):
+    events_ = Events.query.filter_by(user_id = user, week = week).all()
+    events = []
+    
+    for item in events_:
+        event_ = Events.query.filter_by(id = int(item.id)).first()
+        event = {
+            "id":event_.id,
+            "starth": event_.starth,
+            "startm": event_.startm,
+            "duration": event_.duration,
+            "title":event_.title,
+            "desc": event_.desc,
+            "week": event_.week,
+            "day_of_week": event_.day_of_week,
+            "day_of_month": event_.day_of_month,
+            "year": event_.year,
+            "month": event_.month
+        }
+        events.append(event)
+    return jsonify(events) 
 
 @app.route('/user', methods=['POST'])
 def add_user():
